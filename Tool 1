@@ -1,0 +1,44 @@
+print("What is your name?")
+#Allow users to enter their name
+name = input()
+
+#include the name in the hello message
+print("Hello,", name)
+
+#introduction message
+print("""
+welcome to Anything We Become
+Here, we recognize that stress enhances performance and our mindset will grow
+We will start by watching a video to illustrate how stress enhances performance
+Please select the level of video you would like to watch
+""")
+
+#first prompt
+print("""Please select the level of video you would like to watch
+      Difficult - For those interested in the cognitive process of stress enhancing
+      Medium- For those that are comfortable with some scientific jargon
+      Simple - For those that prefer the simplest illustrations, like explaining to a six year old""")
+
+#Need to create three buttons for each option
+#link the button to an option and the video starts playing. 
+
+import tkinter as tk
+import webbrowser
+
+root = tk.Tk()
+root.title("Video Selection")
+
+video_links = {
+    "Difficult": "https://www.youtube.com/watch?v=SedgGUlhSl0&pp=ygUcc3RyZXNzIGVuaGFuY2VzIHBlcmZvcm1hbmNlIA%3D%3D",
+    "Medium": "https://www.youtube.com/watch?v=PZ-GvIOhcf8&pp=ygUcc3RyZXNzIGVuaGFuY2VzIHBlcmZvcm1hbmNlIA%3D%3D",
+    "Simple": "https://www.youtube.com/watch?v=15GaKTP0gFE&pp=ygUcc3RyZXNzIGVuaGFuY2VzIHBlcmZvcm1hbmNlIA%3D%3D"
+}
+
+def open_video_link(video_link):
+    webbrowser.open_new_tab(video_link)
+
+for btn_text, link in video_links.items():
+    button = tk.Button(root, text=btn_text, command=lambda l=link: open_video_link(l))
+    button.pack()
+
+root.mainloop()
