@@ -1,0 +1,32 @@
+def save_reflection():
+    # Step 1: Prompt user for type of reflection
+    reflection_type = input("Are you reflecting on an 'achievement' or 'failure'? ").strip().lower()
+    if reflection_type not in ['achievement', 'failure']:
+        print("Invalid input. Please enter 'achievement' or 'failure'.")
+        return
+    
+    # Step 2: Ask for description and emotional state
+    experience = input("Please describe your experience: ").strip()
+    emotion = input("How do you feel about it? ").strip()
+    
+    # Step 3: Save the reflection to a file
+    with open("reflections.txt", "a") as file:
+        file.write(f"Type: {reflection_type}\nExperience: {experience}\nEmotion: {emotion}\n---\n")
+    print("Your reflection has been saved.")
+    
+    # Step 4: Reassess and provide feedback
+    reassess = input("Would you like to reassess your emotional state? (yes/no): ").strip().lower()
+    if reassess == 'yes':
+        new_emotion = input("What is your new emotional state?: ").strip()
+        # Provide feedback based on new emotion
+        if "happy" in new_emotion or "content" in new_emotion:
+            feedback = "It's great to see you're feeling positive!"
+        elif "sad" in new_emotion or "upset" in new_emotion:
+            feedback = "It's okay to have challenging emotions. Reflect on how to improve."
+        else:
+            feedback = "Thank you for reassessing. Keep processing your emotions."
+        
+        print(feedback)
+
+# Call the function to test it
+save_reflection()
