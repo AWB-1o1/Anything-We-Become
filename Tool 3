@@ -1,1 +1,69 @@
+import smtplib
+from tkinter import *
+from tkinter import messagebox
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
+def send_email(name1, rel1, email1, name2, rel2, email2, name3, rel3, email3, experience):
+    try:
+        # Your email details
+        sender_email = "youremail@example.com"  # replace with your email
+        sender_password = "yourpassword"  # replace with your email password
+        subject = "Requesting Feedback"
+        
+        # Email Message
+        message = f"Hello {{name}},\n\nWe hope this message finds you well."
+        message += f"\n\nI am reaching out to share my recent experience: {experience} "
+        message += "and I would really appreciate your objective feedback."
+        message += "\n\nThank you!\n"
+
+        # Setting up the SMTP server connection
+        server = smtplib.SMTP('smtp.example.com', 587)  # replace with your SMTP server and port
+        server.starttls()
+        server.login(sender_email, sender_password)
+
+        # Send mail to the addresses if they are provided
+        emails = [(name1, rel1, email1), (name2, rel2, email2), (name3, rel3, email3)]
+        for name, rel, email in emails:
+            if email:
+                msg = MIMEMultipart()
+                msg['From'] = sender_email
+                msg['To'] = email
+                msg['Subject'] = subject
+                personalized_message = message.format(name=name)
+                msg.attach(MIMEText(personalized_message, 'plain'))
+                server.send_message(msg)
+        
+        server.quit()
+        messagebox.showinfo("Success", "Emails sent successfully!")
+    except Exception as e:
+        messagebox.showerror("Error", f"Failed to send email: {e}")
+
+def main():
+    # Create the main window
+    root = Tk()
+    root.title("Feedback Request Form")
+
+    # Creating input fields
+    fields = ["Name", "Relationship", "Email"]
+    for i in range(3):  # Loop for 1 to 3 individuals
+        for j, field in enumerate(fields):
+            Label(root, text=f"{field} {i+1}:").grid(row=i*3+j, column=0)
+            Entry(root, width=30).grid(row=i*3+j, column=1)
+
+    # Experience Label and Entry
+    Label(root, text="Your Experience:").grid(row=9, column=0)
+    experience_entry = Text(root, height=5, width=40)
+    experience_entry.grid(row=9, column=1)
+
+    # Button to send emails
+    Button(root, text='Send Email', command=lambda: send_email(
+        # Pass the entered values to the function
+        *[child.get() for child in root.winfo_children() if isinstance(child, Entry)],
+        experience_entry.get("1.0", END)
+    )).grid(row=11, columnspan=2)
+    
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()
